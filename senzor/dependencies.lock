@@ -1,0 +1,42 @@
+dependencies:
+  espressif/esp-zigbee-lib:
+    component_hash: d508f9b91c4b1973e6563fe840923fad2f15b23637f3d743dba1f5a719e1baab
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 2.0.4
+  example_common:
+    dependencies: []
+    source:
+      path: ../utils/example_common
+      type: local
+    version: '*'
+  idf:
+    source:
+      type: idf
+    version: 6.1.0
+  switch_driver:
+    dependencies: []
+    source:
+      path: ../utils/switch_driver
+      type: local
+    version: '*'
+  temp_sensor_driver:
+    dependencies: []
+    source:
+      path: ../utils/temp_sensor_driver
+      type: local
+    version: '*'
+direct_dependencies:
+- espressif/esp-zigbee-lib
+- example_common
+- idf
+- switch_driver
+- temp_sensor_driver
+manifest_hash: e5fd90f5bbd61a548c9828893bf01e7f9234f50a4dafc2f88c957289173f8532
+target: esp32c6
+version: 3.0.0

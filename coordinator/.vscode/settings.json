@@ -1,0 +1,17 @@
+{
+    "idf.currentSetup": "C:\\esp\\.espressif\\v6.1\\esp-idf",
+    "idf.openOcdConfigs": [
+        "board/esp32h2-builtin.cfg"
+    ],
+    "idf.customExtraVars": {
+        "IDF_TARGET": "esp32h2"
+    },
+    "clangd.path": "C:\\Espressif\\tools\\esp-clangd\\esp-21.1.3_20260408\\esp-clangd\\bin\\clangd.exe",
+    "clangd.arguments": [
+      "--background-index",
+      "--query-driver=**",
+      "--compile-commands-dir=c:\\Faks\\Mag_2\\IS\\zigbee_projekt\\coordinator\\build"
+    ],
+    "idf.port": "COM8",
+    "idf.flashType": "UART"
+}

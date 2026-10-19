@@ -1,0 +1,2 @@
+"-specs=C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/bootloader/specs/picolibc.specs"
+-march=rv32imac_zicsr_zifencei_zaamo_zalrsc

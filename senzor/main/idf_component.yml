@@ -1,0 +1,13 @@
+## IDF Component Manager Manifest File
+dependencies:
+  ## Required IDF version
+  idf:
+    version: ">=5.2"
+  espressif/esp-zigbee-lib:
+    version: ">=2.0.0"
+  example_common:
+    path: "C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common"
+  temp_sensor_driver:
+    path: "C:/Faks/Mag_2/IS/zigbee_projekt/utils/temp_sensor_driver"
+  switch_driver:
+    path: "C:/Faks/Mag_2/IS/zigbee_projekt/utils/switch_driver"

@@ -1,0 +1,19 @@
+Command: cmake -G Ninja -B C:\Faks\Mag_2\IS\zigbee_projekt\coordinator\build -DPYTHON_DEPS_CHECKED=1 -DPYTHON=C:\Espressif\tools\python\v6.1\venv\Scripts\python.exe -DESP_PLATFORM=1 -DIDF_TARGET=esp32h2 -DCCACHE_ENABLE=False C:\Faks\Mag_2\IS\zigbee_projekt\coordinator
+Loading defaults file C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common/sdkconfig.mbedtls_minimal...
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP192R1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common/sdkconfig.mbedtls_minimal
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP224R1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common/sdkconfig.mbedtls_minimal
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP192K1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common/sdkconfig.mbedtls_minimal
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP224K1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common/sdkconfig.mbedtls_minimal
+NOTE: unknown kconfig symbol 'MBEDTLS_KEY_EXCHANGE_DHE_RSA' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common/sdkconfig.mbedtls_minimal
+NOTE: unknown kconfig symbol 'MBEDTLS_KEY_EXCHANGE_ECDH_RSA' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common/sdkconfig.mbedtls_minimal
+Loading defaults file C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/sdkconfig.defaults...
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP192R1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/sdkconfig.defaults
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP224R1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/sdkconfig.defaults
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP192K1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/sdkconfig.defaults
+NOTE: unknown kconfig symbol 'MBEDTLS_ECP_DP_SECP224K1_ENABLED' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/sdkconfig.defaults
+NOTE: unknown kconfig symbol 'MBEDTLS_KEY_EXCHANGE_DHE_RSA' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/sdkconfig.defaults
+NOTE: unknown kconfig symbol 'MBEDTLS_KEY_EXCHANGE_ECDH_RSA' assigned to 'n' in C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/sdkconfig.defaults
+NOTE: Kconfig parser version: 1
+NOTE: Kconfig defaults policy: use sdkconfig
+NOTE: Status: Finished with notifications
+NOTE: C:/esp/.espressif/v6.1/esp-idf/components/mbedtls/Kconfig:727: MBEDTLS_KEY_EXCHANGE_RSA_PSK has user-set value n from C:\Users\tilen\AppData\Local\Temp\kconfgen_tmpyt6iywoi but is not visible (disabled dependency)
