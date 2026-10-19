@@ -11,3 +11,5 @@ dependencies:
     path: "C:/Faks/Mag_2/IS/zigbee_projekt/utils/temp_sensor_driver"
   switch_driver:
     path: "C:/Faks/Mag_2/IS/zigbee_projekt/utils/switch_driver"
+  imu_sensor_driver:
+    path: "C:/Faks/Mag_2/IS/zigbee_projekt/utils/imu_sensor_driver"

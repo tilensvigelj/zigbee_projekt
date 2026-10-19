@@ -100,8 +100,9 @@
 		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/openthread/cmake_install.cmake",
 		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/espressif__esp-zigbee-lib/cmake_install.cmake",
 		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/example_common/cmake_install.cmake",
-		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/switch_driver/cmake_install.cmake",
 		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/esp_driver_tsens/cmake_install.cmake",
+		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/imu_sensor_driver/cmake_install.cmake",
+		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/switch_driver/cmake_install.cmake",
 		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/temp_sensor_driver/cmake_install.cmake",
 		"C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/main/cmake_install.cmake"
 	],

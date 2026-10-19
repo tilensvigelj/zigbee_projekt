@@ -409,12 +409,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/switch_driver/cmake_install.cmake")
+  include("C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/esp_driver_tsens/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/esp_driver_tsens/cmake_install.cmake")
+  include("C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/imu_sensor_driver/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/switch_driver/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

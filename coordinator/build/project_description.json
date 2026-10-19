@@ -1,7 +1,7 @@
 {
     "version":            "1.3",
     "project_name":       "thermostat",
-    "project_version":    "1",
+    "project_version":    "be81e11-dirty",
     "project_path":       "C:/Faks/Mag_2/IS/zigbee_projekt/coordinator",
     "idf_path":           "C:/esp/.espressif/v6.1/esp-idf",
     "build_dir":          "C:/Faks/Mag_2/IS/zigbee_projekt/coordinator/build",

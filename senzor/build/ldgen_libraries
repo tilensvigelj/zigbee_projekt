@@ -138,12 +138,14 @@ C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/espressif__esp-zigbee-lib/l
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/driver/libdriver.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/ieee802154/libieee802154.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/example_common/libexample_common.a
+C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/esp_driver_tsens/libesp_driver_tsens.a
+C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/imu_sensor_driver/libimu_sensor_driver.a
+C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/esp_driver_tsens/libesp_driver_tsens.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/switch_driver/libswitch_driver.a
-C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/esp_driver_tsens/libesp_driver_tsens.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/temp_sensor_driver/libtemp_sensor_driver.a
-C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/esp_driver_tsens/libesp_driver_tsens.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/main/libmain.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/espressif__esp-zigbee-lib/libespressif__esp-zigbee-lib.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/example_common/libexample_common.a
+C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/imu_sensor_driver/libimu_sensor_driver.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/switch_driver/libswitch_driver.a
 C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/temp_sensor_driver/libtemp_sensor_driver.a

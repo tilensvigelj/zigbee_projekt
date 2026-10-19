@@ -19,6 +19,12 @@ dependencies:
     source:
       type: idf
     version: 6.1.0
+  imu_sensor_driver:
+    dependencies: []
+    source:
+      path: ../utils/imu_sensor_driver
+      type: local
+    version: '*'
   switch_driver:
     dependencies: []
     source:
@@ -35,8 +41,9 @@ direct_dependencies:
 - espressif/esp-zigbee-lib
 - example_common
 - idf
+- imu_sensor_driver
 - switch_driver
 - temp_sensor_driver
-manifest_hash: e5fd90f5bbd61a548c9828893bf01e7f9234f50a4dafc2f88c957289173f8532
+manifest_hash: f48241158c06eb88d62cd858956711a3cee53b2ca014dfb95cf485bc3dbb3dcb
 target: esp32c6
 version: 3.0.0

@@ -1,7 +1,7 @@
 {
     "version":            "1.3",
     "project_name":       "temperature_sensor",
-    "project_version":    "1",
+    "project_version":    "be81e11-dirty",
     "project_path":       "C:/Faks/Mag_2/IS/zigbee_projekt/senzor",
     "idf_path":           "C:/esp/.espressif/v6.1/esp-idf",
     "build_dir":          "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build",
@@ -25,8 +25,8 @@
         "COMPONENT_KCONFIGS_PROJBUILD" : "C:/esp/.espressif/v6.1/esp-idf/components/app_update/Kconfig.projbuild;C:/esp/.espressif/v6.1/esp-idf/components/bootloader/Kconfig.projbuild;C:/esp/.espressif/v6.1/esp-idf/components/esp_app_format/Kconfig.projbuild;C:/esp/.espressif/v6.1/esp-idf/components/esp_rom/Kconfig.projbuild;C:/esp/.espressif/v6.1/esp-idf/components/esptool_py/Kconfig.projbuild;C:/esp/.espressif/v6.1/esp-idf/components/partition_table/Kconfig.projbuild"
     },
     "common_component_reqs": [ "cxx", "esp_libc", "freertos", "esp_hw_support", "heap", "log", "soc", "hal", "esp_rom", "esp_common", "esp_system", "esp_stdio", "riscv" ],
-    "build_components" : [ "app_update", "bootloader", "bootloader_support", "console", "cxx", "driver", "efuse", "esp_app_format", "esp_blockdev", "esp_bootloader_format", "esp_coex", "esp_common", "esp_driver_dma", "esp_driver_gpio", "esp_driver_spi", "esp_driver_tsens", "esp_driver_uart", "esp_driver_usb_serial_jtag", "esp_event", "esp_hal_ana_conv", "esp_hal_clock", "esp_hal_dma", "esp_hal_gpio", "esp_hal_gpspi", "esp_hal_i2c", "esp_hal_ieee802154", "esp_hal_mspi", "esp_hal_pmu", "esp_hal_regi2c", "esp_hal_rtc_timer", "esp_hal_security", "esp_hal_systimer", "esp_hal_timg", "esp_hal_touch_sens", "esp_hal_twai", "esp_hal_uart", "esp_hal_usb", "esp_hal_wdt", "esp_hw_support", "esp_libc", "esp_mm", "esp_netif", "esp_netif_stack", "esp_partition", "esp_phy", "esp_pm", "esp_psram", "esp_ringbuf", "esp_rom", "esp_security", "esp_stdio", "esp_system", "esp_timer", "esp_usb_cdc_rom_console", "esp_wifi", "espressif__esp-zigbee-lib", "esptool_py", "example_common", "freertos", "hal", "heap", "ieee802154", "log", "lwip", "main", "mbedtls", "nvs_flash", "nvs_sec_provider", "openthread", "partition_table", "pthread", "riscv", "soc", "spi_flash", "switch_driver", "temp_sensor_driver", "vfs", "wpa_supplicant", "" ],
-    "build_component_paths" : [ "C:/esp/.espressif/v6.1/esp-idf/components/app_update", "C:/esp/.espressif/v6.1/esp-idf/components/bootloader", "C:/esp/.espressif/v6.1/esp-idf/components/bootloader_support", "C:/esp/.espressif/v6.1/esp-idf/components/console", "C:/esp/.espressif/v6.1/esp-idf/components/cxx", "C:/esp/.espressif/v6.1/esp-idf/components/driver", "C:/esp/.espressif/v6.1/esp-idf/components/efuse", "C:/esp/.espressif/v6.1/esp-idf/components/esp_app_format", "C:/esp/.espressif/v6.1/esp-idf/components/esp_blockdev", "C:/esp/.espressif/v6.1/esp-idf/components/esp_bootloader_format", "C:/esp/.espressif/v6.1/esp-idf/components/esp_coex", "C:/esp/.espressif/v6.1/esp-idf/components/esp_common", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_dma", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_gpio", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_spi", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_tsens", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_uart", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_usb_serial_jtag", "C:/esp/.espressif/v6.1/esp-idf/components/esp_event", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_ana_conv", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_clock", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_dma", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_gpio", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_gpspi", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_i2c", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_ieee802154", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_mspi", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_pmu", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_regi2c", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_rtc_timer", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_security", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_systimer", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_timg", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_touch_sens", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_twai", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_uart", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_usb", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_wdt", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hw_support", "C:/esp/.espressif/v6.1/esp-idf/components/esp_libc", "C:/esp/.espressif/v6.1/esp-idf/components/esp_mm", "C:/esp/.espressif/v6.1/esp-idf/components/esp_netif", "C:/esp/.espressif/v6.1/esp-idf/components/esp_netif_stack", "C:/esp/.espressif/v6.1/esp-idf/components/esp_partition", "C:/esp/.espressif/v6.1/esp-idf/components/esp_phy", "C:/esp/.espressif/v6.1/esp-idf/components/esp_pm", "C:/esp/.espressif/v6.1/esp-idf/components/esp_psram", "C:/esp/.espressif/v6.1/esp-idf/components/esp_ringbuf", "C:/esp/.espressif/v6.1/esp-idf/components/esp_rom", "C:/esp/.espressif/v6.1/esp-idf/components/esp_security", "C:/esp/.espressif/v6.1/esp-idf/components/esp_stdio", "C:/esp/.espressif/v6.1/esp-idf/components/esp_system", "C:/esp/.espressif/v6.1/esp-idf/components/esp_timer", "C:/esp/.espressif/v6.1/esp-idf/components/esp_usb_cdc_rom_console", "C:/esp/.espressif/v6.1/esp-idf/components/esp_wifi", "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/managed_components/espressif__esp-zigbee-lib", "C:/esp/.espressif/v6.1/esp-idf/components/esptool_py", "C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common", "C:/esp/.espressif/v6.1/esp-idf/components/freertos", "C:/esp/.espressif/v6.1/esp-idf/components/hal", "C:/esp/.espressif/v6.1/esp-idf/components/heap", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154", "C:/esp/.espressif/v6.1/esp-idf/components/log", "C:/esp/.espressif/v6.1/esp-idf/components/lwip", "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/main", "C:/esp/.espressif/v6.1/esp-idf/components/mbedtls", "C:/esp/.espressif/v6.1/esp-idf/components/nvs_flash", "C:/esp/.espressif/v6.1/esp-idf/components/nvs_sec_provider", "C:/esp/.espressif/v6.1/esp-idf/components/openthread", "C:/esp/.espressif/v6.1/esp-idf/components/partition_table", "C:/esp/.espressif/v6.1/esp-idf/components/pthread", "C:/esp/.espressif/v6.1/esp-idf/components/riscv", "C:/esp/.espressif/v6.1/esp-idf/components/soc", "C:/esp/.espressif/v6.1/esp-idf/components/spi_flash", "C:/Faks/Mag_2/IS/zigbee_projekt/utils/switch_driver", "C:/Faks/Mag_2/IS/zigbee_projekt/utils/temp_sensor_driver", "C:/esp/.espressif/v6.1/esp-idf/components/vfs", "C:/esp/.espressif/v6.1/esp-idf/components/wpa_supplicant", "" ],
+    "build_components" : [ "app_update", "bootloader", "bootloader_support", "console", "cxx", "driver", "efuse", "esp_app_format", "esp_blockdev", "esp_bootloader_format", "esp_coex", "esp_common", "esp_driver_dma", "esp_driver_gpio", "esp_driver_spi", "esp_driver_tsens", "esp_driver_uart", "esp_driver_usb_serial_jtag", "esp_event", "esp_hal_ana_conv", "esp_hal_clock", "esp_hal_dma", "esp_hal_gpio", "esp_hal_gpspi", "esp_hal_i2c", "esp_hal_ieee802154", "esp_hal_mspi", "esp_hal_pmu", "esp_hal_regi2c", "esp_hal_rtc_timer", "esp_hal_security", "esp_hal_systimer", "esp_hal_timg", "esp_hal_touch_sens", "esp_hal_twai", "esp_hal_uart", "esp_hal_usb", "esp_hal_wdt", "esp_hw_support", "esp_libc", "esp_mm", "esp_netif", "esp_netif_stack", "esp_partition", "esp_phy", "esp_pm", "esp_psram", "esp_ringbuf", "esp_rom", "esp_security", "esp_stdio", "esp_system", "esp_timer", "esp_usb_cdc_rom_console", "esp_wifi", "espressif__esp-zigbee-lib", "esptool_py", "example_common", "freertos", "hal", "heap", "ieee802154", "imu_sensor_driver", "log", "lwip", "main", "mbedtls", "nvs_flash", "nvs_sec_provider", "openthread", "partition_table", "pthread", "riscv", "soc", "spi_flash", "switch_driver", "temp_sensor_driver", "vfs", "wpa_supplicant", "" ],
+    "build_component_paths" : [ "C:/esp/.espressif/v6.1/esp-idf/components/app_update", "C:/esp/.espressif/v6.1/esp-idf/components/bootloader", "C:/esp/.espressif/v6.1/esp-idf/components/bootloader_support", "C:/esp/.espressif/v6.1/esp-idf/components/console", "C:/esp/.espressif/v6.1/esp-idf/components/cxx", "C:/esp/.espressif/v6.1/esp-idf/components/driver", "C:/esp/.espressif/v6.1/esp-idf/components/efuse", "C:/esp/.espressif/v6.1/esp-idf/components/esp_app_format", "C:/esp/.espressif/v6.1/esp-idf/components/esp_blockdev", "C:/esp/.espressif/v6.1/esp-idf/components/esp_bootloader_format", "C:/esp/.espressif/v6.1/esp-idf/components/esp_coex", "C:/esp/.espressif/v6.1/esp-idf/components/esp_common", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_dma", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_gpio", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_spi", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_tsens", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_uart", "C:/esp/.espressif/v6.1/esp-idf/components/esp_driver_usb_serial_jtag", "C:/esp/.espressif/v6.1/esp-idf/components/esp_event", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_ana_conv", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_clock", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_dma", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_gpio", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_gpspi", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_i2c", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_ieee802154", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_mspi", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_pmu", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_regi2c", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_rtc_timer", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_security", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_systimer", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_timg", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_touch_sens", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_twai", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_uart", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_usb", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hal_wdt", "C:/esp/.espressif/v6.1/esp-idf/components/esp_hw_support", "C:/esp/.espressif/v6.1/esp-idf/components/esp_libc", "C:/esp/.espressif/v6.1/esp-idf/components/esp_mm", "C:/esp/.espressif/v6.1/esp-idf/components/esp_netif", "C:/esp/.espressif/v6.1/esp-idf/components/esp_netif_stack", "C:/esp/.espressif/v6.1/esp-idf/components/esp_partition", "C:/esp/.espressif/v6.1/esp-idf/components/esp_phy", "C:/esp/.espressif/v6.1/esp-idf/components/esp_pm", "C:/esp/.espressif/v6.1/esp-idf/components/esp_psram", "C:/esp/.espressif/v6.1/esp-idf/components/esp_ringbuf", "C:/esp/.espressif/v6.1/esp-idf/components/esp_rom", "C:/esp/.espressif/v6.1/esp-idf/components/esp_security", "C:/esp/.espressif/v6.1/esp-idf/components/esp_stdio", "C:/esp/.espressif/v6.1/esp-idf/components/esp_system", "C:/esp/.espressif/v6.1/esp-idf/components/esp_timer", "C:/esp/.espressif/v6.1/esp-idf/components/esp_usb_cdc_rom_console", "C:/esp/.espressif/v6.1/esp-idf/components/esp_wifi", "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/managed_components/espressif__esp-zigbee-lib", "C:/esp/.espressif/v6.1/esp-idf/components/esptool_py", "C:/Faks/Mag_2/IS/zigbee_projekt/utils/example_common", "C:/esp/.espressif/v6.1/esp-idf/components/freertos", "C:/esp/.espressif/v6.1/esp-idf/components/hal", "C:/esp/.espressif/v6.1/esp-idf/components/heap", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154", "C:/Faks/Mag_2/IS/zigbee_projekt/utils/imu_sensor_driver", "C:/esp/.espressif/v6.1/esp-idf/components/log", "C:/esp/.espressif/v6.1/esp-idf/components/lwip", "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/main", "C:/esp/.espressif/v6.1/esp-idf/components/mbedtls", "C:/esp/.espressif/v6.1/esp-idf/components/nvs_flash", "C:/esp/.espressif/v6.1/esp-idf/components/nvs_sec_provider", "C:/esp/.espressif/v6.1/esp-idf/components/openthread", "C:/esp/.espressif/v6.1/esp-idf/components/partition_table", "C:/esp/.espressif/v6.1/esp-idf/components/pthread", "C:/esp/.espressif/v6.1/esp-idf/components/riscv", "C:/esp/.espressif/v6.1/esp-idf/components/soc", "C:/esp/.espressif/v6.1/esp-idf/components/spi_flash", "C:/Faks/Mag_2/IS/zigbee_projekt/utils/switch_driver", "C:/Faks/Mag_2/IS/zigbee_projekt/utils/temp_sensor_driver", "C:/esp/.espressif/v6.1/esp-idf/components/vfs", "C:/esp/.espressif/v6.1/esp-idf/components/wpa_supplicant", "" ],
     "build_component_info" : {
         "app_update": {
             "alias": "idf::app_update",
@@ -958,6 +958,21 @@
             "sources": [ "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/esp_ieee802154.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_ack.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_dev.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_event.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_frame.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_pib.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_util.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_sec.c", "C:/esp/.espressif/v6.1/esp-idf/components/ieee802154/driver/esp_ieee802154_timer.c" ],
             "include_dirs": [ "include" ]
         },
+        "imu_sensor_driver": {
+            "alias": "idf::imu_sensor_driver",
+            "target": "___idf_imu_sensor_driver",
+            "prefix": "idf",
+            "dir": "C:/Faks/Mag_2/IS/zigbee_projekt/utils/imu_sensor_driver",
+            "type": "LIBRARY",
+            "lib": "__idf_imu_sensor_driver",
+            "reqs": [ "esp_driver_tsens" ],
+            "priv_reqs": [ "esp_timer" ],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/imu_sensor_driver/libimu_sensor_driver.a",
+            "sources": [ "C:/Faks/Mag_2/IS/zigbee_projekt/utils/imu_sensor_driver/src/imu_sensor_driver.c" ],
+            "include_dirs": [ "include" ]
+        },
         "log": {
             "alias": "idf::log",
             "target": "___idf_log",
@@ -996,9 +1011,9 @@
             "type": "LIBRARY",
             "lib": "__idf_main",
             "reqs": [],
-            "priv_reqs": [ "vfs", "nvs_flash", "espressif__esp-zigbee-lib", "example_common", "switch_driver", "temp_sensor_driver" ],
+            "priv_reqs": [ "vfs", "nvs_flash", "espressif__esp-zigbee-lib", "example_common", "imu_sensor_driver", "switch_driver", "temp_sensor_driver" ],
             "managed_reqs": [],
-            "managed_priv_reqs": [ "espressif__esp-zigbee-lib", "example_common", "switch_driver", "temp_sensor_driver" ],
+            "managed_priv_reqs": [ "espressif__esp-zigbee-lib", "example_common", "imu_sensor_driver", "switch_driver", "temp_sensor_driver" ],
             "file": "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/build/esp-idf/main/libmain.a",
             "sources": [ "C:/Faks/Mag_2/IS/zigbee_projekt/senzor/main/temperature_sensor.c" ],
             "include_dirs": []
@@ -3106,9 +3121,9 @@
             "source": "project_components",
             "lib": "__idf_main",
             "reqs": [],
-            "priv_reqs": [ "vfs", "nvs_flash", "espressif__esp-zigbee-lib", "example_common", "switch_driver", "temp_sensor_driver" ],
+            "priv_reqs": [ "vfs", "nvs_flash", "espressif__esp-zigbee-lib", "example_common", "imu_sensor_driver", "switch_driver", "temp_sensor_driver" ],
             "managed_reqs": [],
-            "managed_priv_reqs": [ "espressif__esp-zigbee-lib", "example_common", "switch_driver", "temp_sensor_driver" ],
+            "managed_priv_reqs": [ "espressif__esp-zigbee-lib", "example_common", "imu_sensor_driver", "switch_driver", "temp_sensor_driver" ],
             "include_dirs": []
         },
         "espressif__esp-zigbee-lib": {
@@ -3133,6 +3148,19 @@
             "lib": "__idf_example_common",
             "reqs": [ "esp_timer" ],
             "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "include_dirs": [ "include" ]
+        },
+        "imu_sensor_driver": {
+            "alias": "idf::imu_sensor_driver",
+            "target": "___idf_imu_sensor_driver",
+            "prefix": "idf",
+            "dir": "C:/Faks/Mag_2/IS/zigbee_projekt/utils/imu_sensor_driver",
+            "source": "project_managed_components",
+            "lib": "__idf_imu_sensor_driver",
+            "reqs": [ "esp_driver_tsens" ],
+            "priv_reqs": [ "esp_timer" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "include_dirs": [ "include" ]

@@ -17,7 +17,7 @@
 #include "esp_log.h"
 #include "nvs_flash.h"
 
-#include "temp_sensor_driver.h"
+#include "imu_sensor_driver.h"
 #include "switch_driver.h"
 #include "alarm_timer.h"
 
@@ -30,11 +30,12 @@ static const char *TAG = "TEMPERATURE_SENSOR";
 
 #define ESP_TEMP_SENSOR_MIN_VALUE       (-10) /* Sensor min measured value (degree Celsius) */
 #define ESP_TEMP_SENSOR_MAX_VALUE       (80)  /* Sensor max measured value (degree Celsius) */
-#define ESP_TEMP_SENSOR_UPDATE_INTERVAL (1.0f)   /* Sensor update interval (seconds) */
+#define ESP_TEMP_SENSOR_UPDATE_INTERVAL (0.1f)   /* Sensor update interval (seconds) */
 
 static int16_t zb_temperature_to_s16(float temp) { return (int16_t)(temp * 100); }
 
 static void esp_app_temp_sensor_handler(float temperature)
+
 {
     int16_t measured_value = zb_temperature_to_s16(temperature);
     /* Update temperature sensor measured value */

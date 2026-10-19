@@ -138,12 +138,14 @@ $<TARGET_FILE:idf::espressif__esp-zigbee-lib>
 $<TARGET_FILE:__idf_driver>
 $<TARGET_FILE:__idf_ieee802154>
 $<TARGET_FILE:idf::example_common>
-$<TARGET_FILE:idf::switch_driver>
 $<TARGET_FILE:idf::esp_driver_tsens>
-$<TARGET_FILE:idf::temp_sensor_driver>
+$<TARGET_FILE:idf::imu_sensor_driver>
 $<TARGET_FILE:__idf_esp_driver_tsens>
+$<TARGET_FILE:idf::switch_driver>
+$<TARGET_FILE:idf::temp_sensor_driver>
 $<TARGET_FILE:idf::main>
 $<TARGET_FILE:__idf_espressif__esp-zigbee-lib>
 $<TARGET_FILE:__idf_example_common>
+$<TARGET_FILE:__idf_imu_sensor_driver>
 $<TARGET_FILE:__idf_switch_driver>
 $<TARGET_FILE:__idf_temp_sensor_driver>

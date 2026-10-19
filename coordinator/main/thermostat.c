@@ -16,6 +16,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include "esp_timer.h" 
 
 #include "switch_driver.h"
 #include "alarm_timer.h"
@@ -80,11 +81,11 @@ static ezb_err_t zdo_config_ha_temperature_sensor_reporting(void)
             .client =
                 {
                     .attr_type    = EZB_ZCL_ATTR_TYPE_INT16,
-                    .min_interval = 1,
-                    .max_interval = 10,
+                    .min_interval = 0,
+                    .max_interval = 0.1f,
                     .reportable_change =
                         {
-                            .s16 = 200,
+                            .s16 = 1,
                         },
                 },
         },
@@ -400,6 +401,25 @@ static void zcl_core_cmd_read_attr_rsp_handler(ezb_zcl_cmd_read_attr_rsp_message
 
 }
 
+
+
+/* One parseable line per received value.
+ * Format: ZBDATA,<uptime_ms>,<ieee_addr>,<short_addr>,<ep>,<cluster>,<attr>,<value>
+ * ieee_addr is the permanent sensor ID. cluster/attr allow other sensor types (IMU) later. */
+static void log_sensor_data(uint16_t short_addr, uint8_t src_ep, uint16_t cluster_id,
+                            uint16_t attr_id, float value)
+{
+    ezb_extaddr_t ieee = {0};   /* check the exact type name in your ezbee headers */
+    uint64_t      id   = 0;
+
+    if (ezb_address_extended_by_short(short_addr, &ieee) == EZB_ERR_NONE) {
+        id = ieee.u64;          /* adjust if the field is named differently */
+    }
+    printf("ZBDATA,%lld,%016llx,0x%04x,%u,0x%04x,0x%04x,%.2f\n",
+           (long long)(esp_timer_get_time() / 1000), (unsigned long long)id,
+           short_addr, src_ep, cluster_id, attr_id, value);
+}
+
 static void zcl_core_cmd_report_attr_handler(ezb_zcl_cmd_report_attr_message_t *message)
 {
     ESP_RETURN_ON_FALSE(message, , TAG, "message is empty");
@@ -408,14 +428,18 @@ static void zcl_core_cmd_report_attr_handler(ezb_zcl_cmd_report_attr_message_t *
              message->info.status);
 
     switch (message->info.cluster_id) {
-    case EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT: {
+        case EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT: {
         ezb_zcl_report_attr_variable_t *var = message->in.variables;
         while (var) {
             switch (var->attr_id) {
-            case EZB_ZCL_ATTR_TEMPERATURE_MEASUREMENT_MEASURED_VALUE_ID:
-                ESP_LOGI(TAG, "Temperature sensor measured value: %.2f degrees Celsius",
-                         zb_s16_to_temperature(*(int16_t *)var->attr_value));
+            case EZB_ZCL_ATTR_TEMPERATURE_MEASUREMENT_MEASURED_VALUE_ID: {
+                float t = zb_s16_to_temperature(*(int16_t *)var->attr_value);
+                ESP_LOGI(TAG, "Temperature sensor measured value: %.2f degrees Celsius", t);
+                log_sensor_data(message->in.header->src_addr.u.short_addr,
+                                message->in.header->src_ep,
+                                message->info.cluster_id, var->attr_id, t);
                 break;
+            }
             default:
                 ESP_LOGI(TAG, "Temperature Measurement attribute ID: 0x%04x with type: 0x%02x", var->attr_id, var->attr_type);
                 break;
