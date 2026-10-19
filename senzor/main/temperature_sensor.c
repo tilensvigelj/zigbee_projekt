@@ -26,25 +26,91 @@
 
 #include "temperature_sensor.h"
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
+#include "freertos/task.h"
+#include <string.h>
+#include "zb_stream_proto.h"
+#include "ezbee/zcl/cluster/custom.h"
+
 static const char *TAG = "TEMPERATURE_SENSOR";
 
 #define ESP_TEMP_SENSOR_MIN_VALUE       (-10) /* Sensor min measured value (degree Celsius) */
 #define ESP_TEMP_SENSOR_MAX_VALUE       (80)  /* Sensor max measured value (degree Celsius) */
 #define ESP_TEMP_SENSOR_UPDATE_INTERVAL (0.1f)   /* Sensor update interval (seconds) */
 
+#define STREAM_TX_INTERVAL_MS  500          /* target time between packets */
+#define SAMPLE_RATE_HZ_DEFAULT 100.0f        /* adjustable sampling frequency */
+
 static int16_t zb_temperature_to_s16(float temp) { return (int16_t)(temp * 100); }
 
-static void esp_app_temp_sensor_handler(float temperature)
+typedef struct { int64_t ts; uint32_t seq; uint32_t period_us; int16_t val; } sample_t;
 
+static QueueHandle_t   s_sample_q;
+static volatile uint32_t s_period_us;
+static volatile uint32_t s_dropped;
+
+/* Runs in the esp_timer task: must never block. */
+static void sample_cb(float temperature, int64_t ts, uint32_t seq)
 {
-    int16_t measured_value = zb_temperature_to_s16(temperature);
-    /* Update temperature sensor measured value */
-    esp_zigbee_lock_acquire(portMAX_DELAY);
-    ezb_zcl_set_attr_value(ESP_ZIGBEE_HA_TEMPERATURE_SENSOR_EP_ID, EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT,
-                           EZB_ZCL_CLUSTER_SERVER, EZB_ZCL_ATTR_TEMPERATURE_MEASUREMENT_MEASURED_VALUE_ID,
-                           EZB_ZCL_STD_MANUF_CODE, (uint8_t *)&measured_value, false);
-    esp_zigbee_lock_release();
+    sample_t s = { ts, seq, s_period_us, zb_temperature_to_s16(temperature) };
+    if (xQueueSend(s_sample_q, &s, 0) != pdTRUE) {
+        s_dropped++;
+    }
 }
+
+static void stream_flush(stream_batch_t *b)
+{
+    if (b->count == 0) return;
+    uint8_t buf[1 + sizeof(stream_batch_t)];
+    size_t  len = STREAM_HDR_LEN + 2 * b->count;
+    buf[0] = (uint8_t)len;                  /* ZCL octet string = length prefix + data */
+    memcpy(&buf[1], b, len);
+
+    ezb_zcl_report_attr_cmd_t cmd = {
+        .cmd_ctrl = {
+            .fc.direction       = EZB_ZCL_CMD_DIRECTION_TO_CLI,
+            .dst_addr.addr_mode = EZB_ADDR_MODE_NONE,       /* uses the binding */
+            .src_ep             = ESP_ZIGBEE_HA_TEMPERATURE_SENSOR_EP_ID,
+            .cluster_id         = STREAM_CLUSTER_ID,
+        },
+        .payload = { .attr_id = STREAM_ATTR_ID },
+    };
+    esp_zigbee_lock_acquire(portMAX_DELAY);
+    ezb_zcl_set_attr_value(ESP_ZIGBEE_HA_TEMPERATURE_SENSOR_EP_ID, STREAM_CLUSTER_ID, EZB_ZCL_CLUSTER_SERVER,
+                           STREAM_ATTR_ID, EZB_ZCL_STD_MANUF_CODE, buf, false);
+    ezb_err_t ret = ezb_zcl_report_attr_cmd_req(&cmd);
+    esp_zigbee_lock_release();
+    if (ret != EZB_ERR_NONE) ESP_LOGW(TAG, "stream report failed 0x%04x", ret);
+    b->count = 0;
+}
+
+static uint8_t batch_for_rate(float hz)
+{
+    int n = (int)(hz * STREAM_TX_INTERVAL_MS / 1000.0f);
+    return n < 1 ? 1 : (n > STREAM_BATCH_MAX ? STREAM_BATCH_MAX : n);
+}
+
+static void stream_tx_task(void *arg)
+{
+    stream_batch_t b = { .ver = STREAM_PROTO_VER };
+    sample_t s;
+    for (;;) {
+        if (xQueueReceive(s_sample_q, &s, pdMS_TO_TICKS(2 * STREAM_TX_INTERVAL_MS)) != pdTRUE) {
+            stream_flush(&b);               /* timeout: don't leave a partial batch sitting */
+            continue;
+        }
+        bool gap    = b.count && (s.seq != b.first_seq + b.count);
+        bool period = b.count && (s.period_us != b.period_us);
+        if (gap || period) stream_flush(&b);        /* never mix timing in one batch */
+        if (b.count == 0) {
+            b.first_seq = s.seq; b.first_ts_us = (uint64_t)s.ts; b.period_us = s.period_us;
+        }
+        b.val[b.count++] = s.val;
+        if (b.count >= batch_for_rate(1e6f / s.period_us)) stream_flush(&b);
+    }
+}
+
 
 static void button_event_handler(switch_driver_handle_t handle)
 {
@@ -82,9 +148,14 @@ static esp_err_t deferred_driver_init(void)
 
     temperature_sensor_config_t temp_sensor_config =
         TEMPERATURE_SENSOR_CONFIG_DEFAULT(ESP_TEMP_SENSOR_MIN_VALUE, ESP_TEMP_SENSOR_MAX_VALUE);
-    ESP_RETURN_ON_ERROR(
-        temp_sensor_driver_init(&temp_sensor_config, ESP_TEMP_SENSOR_UPDATE_INTERVAL, esp_app_temp_sensor_handler), TAG,
-        "Failed to initialize temperature sensor");
+
+    s_sample_q  = xQueueCreate(256, sizeof(sample_t));
+    ESP_RETURN_ON_FALSE(s_sample_q != NULL, ESP_ERR_NO_MEM, TAG, "Failed to create sample queue");
+    s_period_us = (uint32_t)(1e6f / SAMPLE_RATE_HZ_DEFAULT);
+    xTaskCreate(stream_tx_task, "stream_tx", 4096, NULL, 6, NULL);
+
+    ESP_RETURN_ON_ERROR(temp_sensor_driver_init(&temp_sensor_config, 1.0f / SAMPLE_RATE_HZ_DEFAULT, sample_cb),
+                        TAG, "Failed to initialize temperature sensor");
 
     switch_driver_config_t config = {
         .gpio_num = CONFIG_GPIO_BOOT_ON_DEVKIT,
@@ -176,6 +247,9 @@ static void esp_zigbee_zcl_core_action_handler(ezb_zcl_core_action_callback_id_t
     }
 }
 
+static void stream_cluster_init(uint8_t ep_id)   { (void)ep_id; }
+static void stream_cluster_deinit(uint8_t ep_id) { (void)ep_id; }
+
 esp_err_t esp_zigbee_create_zha_temperature_sensor_device(void)
 {
     ezb_af_device_desc_t                dev_desc               = ezb_af_create_device_desc();
@@ -190,6 +264,21 @@ esp_err_t esp_zigbee_create_zha_temperature_sensor_device(void)
     basic_desc = ezb_af_endpoint_get_cluster_desc(ep_desc, EZB_ZCL_CLUSTER_ID_BASIC, EZB_ZCL_CLUSTER_SERVER);
     ezb_zcl_basic_cluster_desc_add_attr(basic_desc, EZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID, (void *)ESP_MANUFACTURER_NAME);
     ezb_zcl_basic_cluster_desc_add_attr(basic_desc, EZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID, (void *)ESP_MODEL_IDENTIFIER);
+        /* Custom stream cluster: octet-string attribute carrying one sample batch */
+    static const ezb_zcl_custom_cluster_config_t stream_cfg = {
+        .cluster_id  = STREAM_CLUSTER_ID,
+        .init_func   = stream_cluster_init,
+        .deinit_func = stream_cluster_deinit,
+    };
+    /* For octet strings the first byte is the length; initialise it to the maximum size */
+    static uint8_t stream_init_val[1 + sizeof(stream_batch_t)] = {sizeof(stream_batch_t)};
+
+    ezb_zcl_cluster_desc_t stream_desc = ezb_zcl_custom_create_cluster_desc(&stream_cfg, EZB_ZCL_CLUSTER_SERVER);
+    ESP_ERROR_CHECK(ezb_zcl_custom_cluster_desc_add_attr(stream_desc, STREAM_ATTR_ID,
+                                                         EZB_ZCL_ATTR_TYPE_OCTSTR,
+                                                         EZB_ZCL_ATTR_ACCESS_READ_ONLY | EZB_ZCL_ATTR_ACCESS_REPORTING,
+                                                         stream_init_val));
+    ESP_ERROR_CHECK(ezb_af_endpoint_add_cluster_desc(ep_desc, stream_desc));
 
     ESP_ERROR_CHECK(ezb_af_device_add_endpoint_desc(dev_desc, ep_desc));
     ESP_ERROR_CHECK(ezb_af_device_desc_register(dev_desc));

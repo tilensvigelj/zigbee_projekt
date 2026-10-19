@@ -15,8 +15,7 @@
 #include "esp_check.h"
 #include "esp_err.h"
 #include "esp_log.h"
-#include "nvs_flash.h"
-#include "esp_timer.h" 
+#include "nvs_flash.h" 
 
 #include "switch_driver.h"
 #include "alarm_timer.h"
@@ -25,6 +24,10 @@
 #include "ezbee/zha.h"
 
 #include "thermostat.h"
+
+#include "ezbee/zcl/cluster/custom.h"
+#include "esp_timer.h"
+#include "zb_stream_proto.h"
 
 static const char *TAG = "THERMOSTAT";
 
@@ -119,7 +122,9 @@ static void zdo_bind_ha_temperature_sensor_device_result(const ezb_zdp_bind_req_
             if (bind_req->dst_nwk_addr == ezb_nwk_get_short_address()) {
                 ESP_LOGI(TAG, "Bound HA temperature sensor device (0x%04hx, 0x%02x) to local successfully",
                          bind_req->dst_nwk_addr, bind_req->field.dst_ep);
-                zdo_config_ha_temperature_sensor_reporting();
+                if (bind_req->field.cluster_id == EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT) {
+                    zdo_config_ha_temperature_sensor_reporting();
+                }
             } else {
                 ESP_LOGI(TAG, "Subscribed HA temperature sensor device (0x%04hx, 0x%02x) from local successfully",
                          bind_req->dst_nwk_addr, bind_req->field.src_ep);
@@ -135,13 +140,13 @@ static void zdo_bind_ha_temperature_sensor_device_result(const ezb_zdp_bind_req_
     }
 }
 
-static ezb_err_t zdo_bind_ha_temperature_sensor_device(uint16_t dst_short_addr, uint8_t dst_ep)
+static ezb_err_t zdo_bind_cluster(uint16_t dst_short_addr, uint8_t dst_ep, uint16_t cluster_id)
 {
     ezb_err_t           ret          = EZB_ERR_FAIL;
     ezb_zdo_bind_req_t *bind_sensor  = malloc(sizeof(ezb_zdo_bind_req_t));
     bind_sensor->dst_nwk_addr        = ezb_nwk_get_short_address();
     bind_sensor->field.src_ep        = ESP_ZIGBEE_HA_THERMOSTAT_EP_ID;
-    bind_sensor->field.cluster_id    = EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT;
+    bind_sensor->field.cluster_id    = cluster_id;
     bind_sensor->field.dst_addr_mode = EZB_ADDR_MODE_EXT;
     bind_sensor->field.dst_ep        = dst_ep;
     bind_sensor->cb                  = zdo_bind_ha_temperature_sensor_device_result;
@@ -163,7 +168,7 @@ static ezb_err_t zdo_bind_ha_temperature_sensor_device(uint16_t dst_short_addr, 
     ezb_zdo_bind_req_t *subscribe_sensor  = malloc(sizeof(ezb_zdo_bind_req_t));
     subscribe_sensor->dst_nwk_addr        = dst_short_addr;
     subscribe_sensor->field.src_ep        = dst_ep;
-    subscribe_sensor->field.cluster_id    = EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT;
+    subscribe_sensor->field.cluster_id    = cluster_id;
     subscribe_sensor->field.dst_addr_mode = EZB_ADDR_MODE_EXT;
     subscribe_sensor->field.dst_ep        = ESP_ZIGBEE_HA_THERMOSTAT_EP_ID;
     subscribe_sensor->cb                  = zdo_bind_ha_temperature_sensor_device_result;
@@ -182,6 +187,13 @@ static ezb_err_t zdo_bind_ha_temperature_sensor_device(uint16_t dst_short_addr, 
                  dst_short_addr, dst_ep, ret);
     }
 
+    return ret;
+}
+
+static ezb_err_t zdo_bind_ha_temperature_sensor_device(uint16_t dst_short_addr, uint8_t dst_ep)
+{
+    ezb_err_t ret = zdo_bind_cluster(dst_short_addr, dst_ep, EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT);
+    zdo_bind_cluster(dst_short_addr, dst_ep, STREAM_CLUSTER_ID);
     return ret;
 }
 
@@ -428,26 +440,47 @@ static void zcl_core_cmd_report_attr_handler(ezb_zcl_cmd_report_attr_message_t *
              message->info.status);
 
     switch (message->info.cluster_id) {
-        case EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT: {
+    case EZB_ZCL_CLUSTER_ID_TEMPERATURE_MEASUREMENT: {
         ezb_zcl_report_attr_variable_t *var = message->in.variables;
         while (var) {
             switch (var->attr_id) {
-            case EZB_ZCL_ATTR_TEMPERATURE_MEASUREMENT_MEASURED_VALUE_ID: {
-                float t = zb_s16_to_temperature(*(int16_t *)var->attr_value);
-                ESP_LOGI(TAG, "Temperature sensor measured value: %.2f degrees Celsius", t);
-                log_sensor_data(message->in.header->src_addr.u.short_addr,
-                                message->in.header->src_ep,
-                                message->info.cluster_id, var->attr_id, t);
+            case EZB_ZCL_ATTR_TEMPERATURE_MEASUREMENT_MEASURED_VALUE_ID:
+                ESP_LOGI(TAG, "Temperature sensor measured value: %.2f degrees Celsius",
+                         zb_s16_to_temperature(*(int16_t *)var->attr_value));
                 break;
-            }
             default:
                 ESP_LOGI(TAG, "Temperature Measurement attribute ID: 0x%04x with type: 0x%02x", var->attr_id, var->attr_type);
                 break;
             }
             var = var->next;
         }
-        break;
-    }
+    } break;
+
+    case STREAM_CLUSTER_ID: {
+        ezb_zcl_report_attr_variable_t *var = message->in.variables;
+        for (; var; var = var->next) {
+            if (var->attr_id != STREAM_ATTR_ID) continue;
+            const uint8_t *p = (const uint8_t *)var->attr_value;
+            uint8_t len = p[0];
+            stream_batch_t b;
+            if (len < STREAM_HDR_LEN || len > sizeof(b)) continue;
+            memset(&b, 0, sizeof(b));
+            memcpy(&b, p + 1, len);
+            if (b.ver != STREAM_PROTO_VER || b.count > STREAM_BATCH_MAX) continue;
+
+            uint16_t short_addr = message->in.header->src_addr.u.short_addr;
+            ezb_extaddr_t ieee = {0};
+            uint64_t id = (ezb_address_extended_by_short(short_addr, &ieee) == EZB_ERR_NONE) ? ieee.u64 : 0;
+
+            printf("ZBSTREAM,%lld,%016llx,0x%04x,%lu,%llu,%lu,%u",
+                   (long long)(esp_timer_get_time() / 1000), (unsigned long long)id, short_addr,
+                   (unsigned long)b.first_seq, (unsigned long long)b.first_ts_us,
+                   (unsigned long)b.period_us, b.count);
+            for (int i = 0; i < b.count; i++) printf(",%d", b.val[i]);
+            printf("\n");
+        }
+    } break;
+
     default:
         ESP_LOGW(TAG, "Unknown cluster ID: 0x%04x", message->info.cluster_id);
         break;
@@ -491,6 +524,9 @@ static void esp_zigbee_zcl_core_action_handler(ezb_zcl_core_action_callback_id_t
     }
 }
 
+static void stream_cluster_init(uint8_t ep_id)   { (void)ep_id; }
+static void stream_cluster_deinit(uint8_t ep_id) { (void)ep_id; }
+
 esp_err_t esp_zigbee_create_zha_thermostat_device(void)
 {
     ezb_af_device_desc_t        dev_desc       = ezb_af_create_device_desc();
@@ -504,7 +540,13 @@ esp_err_t esp_zigbee_create_zha_thermostat_device(void)
     ESP_ERROR_CHECK(ezb_af_endpoint_add_cluster_desc(ep_desc, ezb_zcl_basic_create_cluster_desc(NULL, EZB_ZCL_CLUSTER_CLIENT)));
     ESP_ERROR_CHECK(ezb_af_endpoint_add_cluster_desc(
         ep_desc, ezb_zcl_temperature_measurement_create_cluster_desc(NULL, EZB_ZCL_CLUSTER_CLIENT)));
-
+    static const ezb_zcl_custom_cluster_config_t stream_cfg = {
+        .cluster_id  = STREAM_CLUSTER_ID,
+        .init_func   = stream_cluster_init,
+        .deinit_func = stream_cluster_deinit,
+    };
+    ESP_ERROR_CHECK(ezb_af_endpoint_add_cluster_desc(
+        ep_desc, ezb_zcl_custom_create_cluster_desc(&stream_cfg, EZB_ZCL_CLUSTER_CLIENT)));
     ESP_ERROR_CHECK(ezb_af_device_add_endpoint_desc(dev_desc, ep_desc));
     ESP_ERROR_CHECK(ezb_af_device_desc_register(dev_desc));
 
@@ -522,6 +564,7 @@ esp_err_t esp_zigbee_setup_commissioning(void)
 
     return ESP_OK;
 }
+
 
 static void esp_zigbee_stack_main_task(void *pvParameters)
 {
